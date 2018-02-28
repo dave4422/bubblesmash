@@ -1,0 +1,54 @@
+6 interfaces to interact with os:
+
+Application: runs the application and informs an API client about application level events, such as window resizing. Provides logging facilities and querying methods, e.g., memory usage.
+Files: exposes the underlying file system(s) of the platform. Provides an abstraction over different types of file locations on top of a custom file handle system (which does not inter-operate with Java's File class).
+Input: informs the API client of user input such as mouse, keyboard, touch or accelerometer events. Both polling and event driven processing are supported.
+Net: provides means to access resources via HTTP/HTTPS in a cross-platform way, as well as create TCP server and client sockets.
+Audio: provides means to playback sound effects and streaming music as well as directly accessing audio devices for PCM audio input/output.
+Graphics: exposes OpenGL ES 2.0 (where available) and allows querying/setting video modes and similar things.
+
+modules can be access via static fields
+
+AudioDevice audioDevice = Gdx.audio.newAudioDevice(44100, false);
+
+###################
+###################
+
+starter class is only platform specific code and necessary to  instantiate a concrete implementation of the Application interface
+
+###################
+###################
+
+actual code of the application is located in class that implements ApplicationListener, here {@link GameClass}
+ApplicationListener implements methods for life cycle: create() -> resize() -> render() -> pause()
+
+ApplicationListener.render() method can be regarded as the body of main loop:
+
+Method called by the game loop from the application every time rendering should be performed. 
+Game logic updates are usually also performed in this method.
+
+###################
+###################
+
+Android specifics:
+
+Android applications can have multiple activities. Libgdx games should usually only consist of a single activity. 
+The reason for this is that creating a new Activity also implies creating a new OpenGL context, which is time consuming and also means that all graphical resources have to be reloaded.
+
+Configuration of android app takes place in AndroidApplicationConfiguration class and AndroidManifest.xml file.
+(Like app name, target sdk, permissions etc.)
+
+
+###################
+###################
+
+Logging in libgdx:
+
+Gdx.app.log("MyTag", "my informative message");
+Gdx.app.error("MyTag", "my error message", exception);
+Gdx.app.debug("MyTag", "my debug message");
+
+
+
+
+
